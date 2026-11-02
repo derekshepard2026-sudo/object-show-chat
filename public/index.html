@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Object Show CHAT</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body class="bfdi-theme">
+
+  <!-- Pantalla de Inicio / Registro -->
+  <div id="auth-screen" class="modal">
+    <div class="modal-box">
+      <h2>BFDI - Object Show CHAT</h2>
+      <input type="text" id="reg-display" placeholder="Nombre de VisualizaciÃ³n">
+      <input type="text" id="reg-user" placeholder="@username (para buscarte)">
+      <input type="password" id="reg-pass" placeholder="ContraseÃ±a">
+      <button onclick="register()">Crear Cuenta</button>
+      <hr>
+      <button onclick="login()" class="secondary">Iniciar SesiÃ³n</button>
+    </div>
+  </div>
+
+  <!-- AplicaciÃ³n Principal -->
+  <div id="app" style="display:none;">
+    <div class="sidebar">
+      <div class="header">
+        <h3>Object Show CHAT</h3>
+        <span class="nitro-badge">NITRO ACTIVADO</span>
+      </div>
+      
+      <div class="user-card" id="my-profile-card">
+        <img id="my-avatar" src="/bfdi_default.png" onclick="triggerUpload('avatar-input')">
+        <div class="user-info">
+          <b id="my-display">Cargando...</b>
+          <span id="my-tag">@usuario</span>
+        </div>
+      </div>
+
+      <div class="section-title">Modo de Red</div>
+      <select id="network-mode" onchange="toggleNetworkMode()">
+        <option value="global">Servidor Global (Online)</option>
+        <option value="local">Modo Local (Mismo Wi-Fi)</option>
+      </select>
+
+      <div class="section-title">Agregar por @username</div>
+      <div class="add-friend-box">
+        <input type="text" id="friend-search" placeholder="@username">
+        <button onclick="addFriend()">+</button>
+      </div>
+
+      <div class="section-title">Amigos & Chats</div>
+      <div id="friends-list"></div>
+
+      <button class="settings-btn" onclick="openSettings()">âš™ ConfiguraciÃ³n / Cuentas</button>
+    </div>
+
+    <div class="chat-area">
+      <div class="chat-header" id="active-chat-header">
+        Selecciona un amigo para chatear
+      </div>
+      <div class="messages-container" id="messages-container"></div>
+      
+      <div class="input-bar">
+        <button onclick="triggerUpload('file-input')" class="attach-btn">ðŸ“Ž</button>
+        <input type="text" id="message-text" placeholder="Enviar mensaje..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()" class="send-btn">âž”</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inputs invisibles para subida desde GalerÃ­a -->
+  <input type="file" id="avatar-input" accept="image/*,image/gif" style="display:none;" onchange="uploadAvatar(this)">
+  <input type="file" id="banner-input" accept="image/*,image/gif" style="display:none;" onchange="uploadBanner(this)">
+  <input type="file" id="file-input" accept="*/*" style="display:none;" onchange="sendFile(this)">
+
+  <!-- Modal de ConfiguraciÃ³n / Ajustes -->
+  <div id="settings-modal" class="modal" style="display:none;">
+    <div class="modal-box">
+      <h3>Perfil & DecoraciÃ³n BFDI</h3>
+      <label>Subir Avatar (GIF/PNG desde GalerÃ­a):</label>
+      <button onclick="triggerUpload('avatar-input')">Seleccionar Foto/GIF</button>
+      <label>Subir Banner (GIF/PNG desde GalerÃ­a):</label>
+      <button onclick="triggerUpload('banner-input')">Seleccionar Banner GIF</button>
+      <hr>
+      <button onclick="switchAccount()" class="danger">Cerrar SesiÃ³n / Cambiar Cuenta</button>
+      <button onclick="closeSettings()" class="secondary">Cerrar</button>
+    </div>
+  </div>
+
+  <audio id="bfdi-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+  <script src="app.js"></script>
+</body>
+</html>
+
+  
